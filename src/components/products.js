@@ -19,19 +19,63 @@ class className extends Component {
         }
     }
 
+    handleClick = (e) => {
+        let temparr = this.state.compare.arr
+        let id = temparr.indexOf(e.target.id)
+
+        if(id != -1) {
+            temparr.splice(id, 1)
+        }
+        else {
+            temparr.push(e.target.id)
+        }
+
+        this.setState({ compare: { arr: temparr }})
+    }
+
     render() {
+        let temparr = this.state.compare.arr;
+        let temp = []
+        let Compare;
+        for(var i = 0; i < temparr.length; i++) {
+            let x = this.state.products.find(prod => prod.id == temparr[i]);
+            temp.push(x);
+        }
+
         return (
-            <Row>
-                {this.state.products.map((product, index) => (
-                    <Col key={product.id} md="2" lg="2">
-                        <Card body outline engine="primary">
-                            <img height="120px" width="240px" src={require("../assets/images/" + product.img)}/>
-                            <CardTitle>{product.name}</CardTitle>
-                            <Button type="button" id={product.id} onClick={this.handleClick}>Button</Button>
-                        </Card>
-                    </Col>
-                ))}
-            </Row>
+            <div>
+                <Row>
+                    {this.state.products.map((product, index) => (
+                        <Col key={product.id} md="2" lg="2">
+                            <Card body outline engine="primary">
+                                <img height="120px" width="240px" src={require("../assets/images/" + product.img)}/>
+                                <CardTitle>{product.name}</CardTitle>
+                                <Button type="button" id={product.id} onClick={this.handleClick}>Button</Button>
+                            </Card>
+                        </Col>
+                    ))}
+                </Row>
+
+                <Table>
+                    <thead>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Engine</th>
+                    </thead>
+                    {temp.map((product) => (
+                        <tbody>
+                            <tr>
+                                <td>{product.name}</td>
+                                <td>{product.price}</td>
+                                <td>{product.engine}</td>
+                            </tr>
+
+                        </tbody>
+
+                    ))}
+                </Table>
+
+            </div>
         )
     }
 }
